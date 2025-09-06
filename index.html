@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browque - Premier Newspaper & Digital Advertising Agency</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@300;400;600&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-3d" id="logo-3d"></div>
+                <h2>Browque</h2>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#newspaper" class="nav-link">Newspaper Ads</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#digital" class="nav-link">Digital Marketing</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#portfolio" class="nav-link">Portfolio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="mobile-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with 3D Background -->
+    <section id="home" class="hero">
+        <div class="hero-3d-bg" id="hero-3d"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title animate-fade-in">Transform Your Brand Across All Media</h1>
+                <p class="hero-subtitle animate-fade-in-delay">From traditional newspaper advertising to cutting-edge digital campaigns, we amplify your message across every platform to maximize market reach and sales growth.</p>
+                <div class="hero-buttons animate-fade-in-delay-2">
+                    <button class="btn btn-primary pulse-animation">Start Your Campaign</button>
+                    <button class="btn btn-secondary">View Success Stories</button>
+                </div>
+            </div>
+            <div class="hero-stats floating-animation">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="500">0</span>
+                    <span class="stat-label">Newspaper Campaigns</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="1200">0</span>
+                    <span class="stat-label">Digital Campaigns</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="98">0</span>
+                    <span class="stat-label">Client Satisfaction %</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="300">0</span>
+                    <span class="stat-label">Media Partners</span>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator bounce-animation">
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Comprehensive Advertising Solutions</h2>
+                <p class="section-subtitle">Bridging traditional and digital media for maximum impact</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card hover-lift" data-aos="fade-up">
+                    <div class="service-icon newspaper-icon">
+                        <img src="/placeholder.svg?height=64&width=64" alt="Newspaper">
+                    </div>
+                    <h3 class="service-title">Newspaper Advertising</h3>
+                    <p class="service-description">Strategic placement in top-tier newspapers with proven circulation and readership demographics.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Print Design</span>
+                        <span class="feature-tag">Media Planning</span>
+                        <span class="feature-tag">Circulation Analysis</span>
+                    </div>
+                    <div class="service-image">
+                        <img src="/placeholder.svg?height=200&width=300" alt="Newspaper Ad">
+                    </div>
+                </div>
+                
+                <div class="service-card hover-lift" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-icon digital-icon">
+                        <img src="/placeholder.svg?height=64&width=64" alt="Digital">
+                    </div>
+                    <h3 class="service-title">Digital Advertising</h3>
+                    <p class="service-description">Multi-platform digital campaigns across social media, search engines, and premium websites.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Google Ads</span>
+                        <span class="feature-tag">Social Media</span>
+                        <span class="feature-tag">Programmatic</span>
+                    </div>
+                    <div class="service-image">
+                        <img src="/placeholder.svg?height=200&width=300" alt="Digital Campaign">
+                    </div>
+                </div>
+                
+                <div class="service-card hover-lift" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-icon analytics-icon">
+                        <img src="/placeholder.svg?height=64&width=64" alt="Analytics">
+                    </div>
+                    <h3 class="service-title">Cross-Media Analytics</h3>
+                    <p class="service-description">Unified tracking and reporting across all advertising channels for comprehensive ROI analysis.</p>
+                    <div class="service-features">
+                        <span class="feature-tag">Attribution Modeling</span>
+                        <span class="feature-tag">Real-time Tracking</span>
+                        <span class="feature-tag">Custom Dashboards</span>
+                    </div>
+                    <div class="service-image">
+                        <img src="/placeholder.svg?height=200&width=300" alt="Analytics">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newspaper Advertising Section -->
+    <section id="newspaper" class="newspaper-section">
+        <div class="container">
+            <div class="newspaper-content">
+                <div class="newspaper-text" data-aos="fade-right">
+                    <h2 class="section-title">Premium Newspaper Advertising</h2>
+                    <p class="section-description">Partner with the most trusted names in print media. Our newspaper advertising solutions reach affluent, engaged audiences who value quality content and make purchasing decisions based on credible sources.</p>
+                    <div class="newspaper-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">📰</div>
+                            <div class="feature-text">
+                                <h4>Top-Tier Publications</h4>
+                                <p>Partnerships with leading newspapers including The Wall Street Journal, The New York Times, and regional leaders</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🎯</div>
+                            <div class="feature-text">
+                                <h4>Targeted Demographics</h4>
+                                <p>Reach high-income, educated audiences with proven purchasing power and brand loyalty</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-text">
+                                <h4>Measurable Results</h4>
+                                <p>Track campaign performance with circulation data, readership studies, and response analytics</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="newspaper-gallery" data-aos="fade-left">
+                    <div class="gallery-grid">
+                        <img src="/placeholder.svg?height=250&width=200" alt="Newspaper Ad 1" class="gallery-image hover-zoom">
+                        <img src="/placeholder.svg?height=250&width=200" alt="Newspaper Ad 2" class="gallery-image hover-zoom">
+                        <img src="/placeholder.svg?height=250&width=200" alt="Newspaper Ad 3" class="gallery-image hover-zoom">
+                        <img src="/placeholder.svg?height=250&width=200" alt="Newspaper Ad 4" class="gallery-image hover-zoom">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Digital Marketing Section -->
+    <section id="digital" class="digital-section">
+        <div class="container">
+            <div class="digital-content">
+                <div class="digital-gallery" data-aos="fade-right">
+                    <div class="digital-showcase">
+                        <div class="showcase-item active">
+                            <img src="/placeholder.svg?height=300&width=400" alt="Social Media Campaign">
+                            <div class="showcase-overlay">
+                                <h4>Social Media Mastery</h4>
+                                <p>Engaging campaigns across all major platforms</p>
+                            </div>
+                        </div>
+                        <div class="showcase-item">
+                            <img src="/placeholder.svg?height=300&width=400" alt="Google Ads">
+                            <div class="showcase-overlay">
+                                <h4>Search Engine Dominance</h4>
+                                <p>Top rankings and maximum visibility</p>
+                            </div>
+                        </div>
+                        <div class="showcase-item">
+                            <img src="/placeholder.svg?height=300&width=400" alt="Email Marketing">
+                            <div class="showcase-overlay">
+                                <h4>Email Marketing Excellence</h4>
+                                <p>Personalized campaigns that convert</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showcase-controls">
+                        <button class="control-btn active" data-slide="0"></button>
+                        <button class="control-btn" data-slide="1"></button>
+                        <button class="control-btn" data-slide="2"></button>
+                    </div>
+                </div>
+                <div class="digital-text" data-aos="fade-left">
+                    <h2 class="section-title">Digital Marketing Excellence</h2>
+                    <p class="section-description">Harness the power of digital platforms to reach your audience wherever they are. Our data-driven approach ensures every dollar spent delivers maximum ROI through precise targeting and continuous optimization.</p>
+                    <div class="digital-stats">
+                        <div class="stat-box">
+                            <span class="stat-value">2.5B+</span>
+                            <span class="stat-label">Digital Impressions</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value">450%</span>
+                            <span class="stat-label">Avg ROI Increase</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-value">24/7</span>
+                            <span class="stat-label">Campaign Monitoring</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Success Stories</h2>
+                <p class="section-subtitle">Real campaigns, real results, real growth</p>
+            </div>
+            <div class="portfolio-filter">
+                <button class="filter-btn active" data-filter="all">All Campaigns</button>
+                <button class="filter-btn" data-filter="newspaper">Newspaper</button>
+                <button class="filter-btn" data-filter="digital">Digital</button>
+                <button class="filter-btn" data-filter="integrated">Integrated</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item newspaper" data-aos="zoom-in">
+                    <div class="portfolio-image">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Luxury Car Campaign">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3>Luxury Automotive Campaign</h3>
+                                <p>Premium newspaper placements driving showroom visits</p>
+                                <div class="portfolio-metrics">
+                                    <span>+180% Showroom Traffic</span>
+                                    <span>+65% Sales Increase</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item digital" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="portfolio-image">
+                        <img src="/placeholder.svg?height=300&width=400" alt="E-commerce Campaign">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3>E-commerce Growth Campaign</h3>
+                                <p>Multi-platform digital strategy for online retailer</p>
+                                <div class="portfolio-metrics">
+                                    <span>+340% Online Sales</span>
+                                    <span>+220% Website Traffic</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item integrated" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="portfolio-image">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Integrated Campaign">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3>Integrated Brand Launch</h3>
+                                <p>Coordinated newspaper and digital campaign</p>
+                                <div class="portfolio-metrics">
+                                    <span>+500% Brand Awareness</span>
+                                    <span>+125% Market Share</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item newspaper" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="portfolio-image">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Financial Services">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3>Financial Services Campaign</h3>
+                                <p>Trust-building newspaper advertising strategy</p>
+                                <div class="portfolio-metrics">
+                                    <span>+95% Lead Generation</span>
+                                    <span>+40% Client Acquisition</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item digital" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="portfolio-image">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Mobile App Campaign">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3>Mobile App Launch</h3>
+                                <p>Targeted digital acquisition campaign</p>
+                                <div class="portfolio-metrics">
+                                    <span>3M+ App Downloads</span>
+                                    <span>+85% User Retention</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="portfolio-item integrated" data-aos="zoom-in" data-aos-delay="500">
+                    <div class="portfolio-image">
+                        <img src="/placeholder.svg?height=300&width=400" alt="Restaurant Chain">
+                        <div class="portfolio-overlay">
+                            <div class="portfolio-info">
+                                <h3>Restaurant Chain Expansion</h3>
+                                <p>Local newspaper + digital geo-targeting</p>
+                                <div class="portfolio-metrics">
+                                    <span>+280% Foot Traffic</span>
+                                    <span>+150% Revenue Growth</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <h2 class="section-title">Ready to Amplify Your Brand?</h2>
+                    <p class="contact-description">Whether you're looking to dominate traditional media or conquer digital platforms, we have the expertise and partnerships to make it happen.</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">📧</div>
+                            <div class="contact-text">
+                                <h4>Email Us</h4>
+                                <p>campaigns@browque.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📞</div>
+                            <div class="contact-text">
+                                <h4>Call Us</h4>
+                                <p>+1 (555) 123-GROW</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">📍</div>
+                            <div class="contact-text">
+                                <h4>Visit Us</h4>
+                                <p>456 Media Plaza, Suite 200<br>New York, NY 10001</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form" data-aos="fade-left">
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <input type="text" id="name" name="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="company" name="company" placeholder="Company Name">
+                        </div>
+                        <div class="form-group">
+                            <select id="campaign-type" name="campaign-type" required>
+                                <option value="">Select Campaign Type</option>
+                                <option value="newspaper">Newspaper Advertising</option>
+                                <option value="digital">Digital Marketing</option>
+                                <option value="integrated">Integrated Campaign</option>
+                                <option value="consultation">Strategy Consultation</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" name="message" placeholder="Tell us about your advertising goals" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Launch My Campaign</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">Browque</h3>
+                    <p class="footer-description">Bridging traditional and digital advertising to amplify your brand's reach and maximize market impact.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">LinkedIn</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Facebook</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Advertising Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Newspaper Advertising</a></li>
+                        <li><a href="#">Digital Marketing</a></li>
+                        <li><a href="#">Social Media Campaigns</a></li>
+                        <li><a href="#">Search Engine Marketing</a></li>
+                        <li><a href="#">Cross-Media Analytics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Browque</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Media Partners</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">Industry Insights</h4>
+                    <p class="newsletter-text">Get the latest advertising trends, market insights, and campaign strategies delivered to your inbox.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit" class="btn btn-accent">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Browque Advertising Agency. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chatbot -->
+    <div class="chatbot-container" id="chatbot">
+        <div class="chatbot-header" id="chatbot-header">
+            <div class="chatbot-avatar">
+                <div class="avatar-3d" id="chatbot-avatar"></div>
+            </div>
+            <div class="chatbot-info">
+                <h4>Browque Assistant</h4>
+                <span class="chatbot-status">Online</span>
+            </div>
+            <button class="chatbot-toggle" id="chatbot-toggle">
+                <span class="toggle-icon">−</span>
+            </button>
+        </div>
+        <div class="chatbot-messages" id="chatbot-messages">
+            <div class="message bot-message">
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <p>Hi! I'm your Browque advertising assistant. How can I help you amplify your brand today?</p>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbot-input" placeholder="Ask about our advertising services...">
+            <button id="chatbot-send">Send</button>
+        </div>
+    </div>
+    <div class="chatbot-fab" id="chatbot-fab">
+        <div class="fab-3d" id="fab-3d"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
