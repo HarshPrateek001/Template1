@@ -1,320 +1,169 @@
 // Global variables
-let scene, camera, renderer, particles, logoMesh, avatarMesh, fabMesh;
-let chatbotOpen = false;
-let currentSlide = 0;
-const totalSlides = 3;
+let scene, camera, renderer, particles, logo3D, chatbot3D, fab3D;
+let showcaseIndex = 0;
+let showcaseInterval;
+let isScrolling = false;
+const THREE = window.THREE; // Declare the THREE variable
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    initThreeJS();
-    initNavigation();
-    initAnimations();
-    initChatbot();
-    initPortfolioFilter();
-    initShowcase();
-    initContactForm();
-    initNewsletterForm();
-    initScrollEffects();
+    initializeNavigation();
+    initializeHero3D();
+    initializeChatbot();
+    initializeAnimations();
+    initializePortfolioFilter();
+    initializeShowcase();
+    initializeFormHandling();
+    initializeScrollEffects();
+    initializeLazyLoading(); // Initialize lazy loading when DOM is ready
+    
+    // Start animations
+    animate();
 });
 
-// Three.js Initialization
-function initThreeJS() {
-    // Hero 3D Background
-    initHero3D();
-    
-    // Logo 3D
-    initLogo3D();
-    
-    // Chatbot Avatar 3D
-    initChatbotAvatar3D();
-    
-    // FAB 3D
-    initFAB3D();
-}
-
-function initHero3D() {
-    const heroContainer = document.getElementById('hero-3d');
-    if (!heroContainer) return;
-
-    // Scene setup
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 0);
-    heroContainer.appendChild(renderer.domElement);
-
-    // Create floating geometric shapes
-    const geometries = [
-        new THREE.BoxGeometry(1, 1, 1),
-        new THREE.SphereGeometry(0.7, 32, 32),
-        new THREE.ConeGeometry(0.7, 1.5, 32),
-        new THREE.OctahedronGeometry(0.8)
-    ];
-
-    const materials = [
-        new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.3 }),
-        new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.3 }),
-        new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true, transparent: true, opacity: 0.3 }),
-        new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.3 })
-    ];
-
-    const meshes = [];
-    for (let i = 0; i < 20; i++) {
-        const geometry = geometries[Math.floor(Math.random() * geometries.length)];
-        const material = materials[Math.floor(Math.random() * materials.length)];
-        const mesh = new THREE.Mesh(geometry, material);
-        
-        mesh.position.x = (Math.random() - 0.5) * 50;
-        mesh.position.y = (Math.random() - 0.5) * 30;
-        mesh.position.z = (Math.random() - 0.5) * 30;
-        
-        mesh.rotation.x = Math.random() * Math.PI;
-        mesh.rotation.y = Math.random() * Math.PI;
-        
-        scene.add(mesh);
-        meshes.push(mesh);
-    }
-
-    camera.position.z = 20;
-
-    // Animation loop
-    function animate() {
-        requestAnimationFrame(animate);
-        
-        meshes.forEach((mesh, index) => {
-            mesh.rotation.x += 0.005 + index * 0.001;
-            mesh.rotation.y += 0.005 + index * 0.001;
-            mesh.position.y += Math.sin(Date.now() * 0.001 + index) * 0.01;
-        });
-        
-        renderer.render(scene, camera);
-    }
-    animate();
-
-    // Handle resize
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-}
-
-function initLogo3D() {
-    const logoContainer = document.getElementById('logo-3d');
-    if (!logoContainer) return;
-
-    const logoScene = new THREE.Scene();
-    const logoCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const logoRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    logoRenderer.setSize(40, 40);
-    logoRenderer.setClearColor(0x000000, 0);
-    logoContainer.appendChild(logoRenderer.domElement);
-
-    // Create logo geometry
-    const logoGeometry = new THREE.RingGeometry(0.5, 1, 6);
-    const logoMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0x8b5cf6, 
-        transparent: true, 
-        opacity: 0.8 
-    });
-    logoMesh = new THREE.Mesh(logoGeometry, logoMaterial);
-    logoScene.add(logoMesh);
-
-    logoCamera.position.z = 3;
-
-    function animateLogo() {
-        requestAnimationFrame(animateLogo);
-        logoMesh.rotation.z += 0.02;
-        logoRenderer.render(logoScene, logoCamera);
-    }
-    animateLogo();
-}
-
-function initChatbotAvatar3D() {
-    const avatarContainer = document.getElementById('chatbot-avatar');
-    if (!avatarContainer) return;
-
-    const avatarScene = new THREE.Scene();
-    const avatarCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const avatarRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    avatarRenderer.setSize(24, 24);
-    avatarRenderer.setClearColor(0x000000, 0);
-    avatarContainer.appendChild(avatarRenderer.domElement);
-
-    // Create avatar geometry
-    const avatarGeometry = new THREE.SphereGeometry(0.5, 16, 16);
-    const avatarMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0x06b6d4, 
-        wireframe: true,
-        transparent: true, 
-        opacity: 0.8 
-    });
-    avatarMesh = new THREE.Mesh(avatarGeometry, avatarMaterial);
-    avatarScene.add(avatarMesh);
-
-    avatarCamera.position.z = 2;
-
-    function animateAvatar() {
-        requestAnimationFrame(animateAvatar);
-        avatarMesh.rotation.x += 0.01;
-        avatarMesh.rotation.y += 0.02;
-        avatarRenderer.render(avatarScene, avatarCamera);
-    }
-    animateAvatar();
-}
-
-function initFAB3D() {
-    const fabContainer = document.getElementById('fab-3d');
-    if (!fabContainer) return;
-
-    const fabScene = new THREE.Scene();
-    const fabCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const fabRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-    fabRenderer.setSize(30, 30);
-    fabRenderer.setClearColor(0x000000, 0);
-    fabContainer.appendChild(fabRenderer.domElement);
-
-    // Create FAB geometry
-    const fabGeometry = new THREE.OctahedronGeometry(0.6);
-    const fabMaterial = new THREE.MeshBasicMaterial({ 
-        color: 0xffffff, 
-        transparent: true, 
-        opacity: 0.9 
-    });
-    fabMesh = new THREE.Mesh(fabGeometry, fabMaterial);
-    fabScene.add(fabMesh);
-
-    fabCamera.position.z = 2;
-
-    function animateFAB() {
-        requestAnimationFrame(animateFAB);
-        fabMesh.rotation.x += 0.02;
-        fabMesh.rotation.y += 0.02;
-        fabRenderer.render(fabScene, fabCamera);
-    }
-    animateFAB();
-}
-
-// Navigation
-function initNavigation() {
+// Navigation functionality
+function initializeNavigation() {
+    const navbar = document.getElementById('navbar');
     const mobileMenu = document.getElementById('mobile-menu');
     const navMenu = document.getElementById('nav-menu');
     const navLinks = document.querySelectorAll('.nav-link');
-    const navbar = document.getElementById('navbar');
 
     // Mobile menu toggle
-    mobileMenu.addEventListener('click', () => {
-        navMenu.classList.toggle('active');
+    mobileMenu.addEventListener('click', function() {
         mobileMenu.classList.toggle('active');
+        navMenu.classList.toggle('active');
     });
 
     // Close mobile menu when clicking on a link
     navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            navMenu.classList.remove('active');
+        link.addEventListener('click', function() {
             mobileMenu.classList.remove('active');
+            navMenu.classList.remove('active');
+            
+            // Update active link
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
         });
     });
 
     // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 100) {
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+
+        // Update active nav link based on scroll position
+        updateActiveNavLink();
     });
 
-    // Smooth scrolling for navigation links
+    // Smooth scroll for navigation links
     navLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
+        link.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = link.getAttribute('href');
+            const targetId = this.getAttribute('href');
             const targetSection = document.querySelector(targetId);
+            
             if (targetSection) {
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+                const offsetTop = targetSection.offsetTop - 70;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
                 });
             }
         });
     });
+}
 
-    // Active navigation highlighting
-    window.addEventListener('scroll', () => {
-        let current = '';
-        const sections = document.querySelectorAll('section[id]');
+// Update active navigation link based on scroll position
+function updateActiveNavLink() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop - 100;
+        const sectionHeight = section.clientHeight;
         
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id');
-            }
-        });
+        if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+            current = section.getAttribute('id');
+        }
+    });
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
     });
 }
 
-// Animations and scroll effects
-function initAnimations() {
-    // Counter animation
-    const counters = document.querySelectorAll('.stat-number');
-    const animateCounters = () => {
-        counters.forEach(counter => {
-            const target = parseInt(counter.getAttribute('data-target'));
-            const count = parseInt(counter.innerText);
-            const increment = target / 100;
-
-            if (count < target) {
-                counter.innerText = Math.ceil(count + increment);
-                setTimeout(animateCounters, 20);
-            } else {
-                counter.innerText = target;
-            }
-        });
-    };
-
-    // Intersection Observer for animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('aos-animate');
-                
-                // Trigger counter animation when stats section is visible
-                if (entry.target.classList.contains('hero-stats')) {
-                    animateCounters();
-                }
-            }
-        });
-    }, observerOptions);
-
-    // Observe all elements with data-aos attribute
-    document.querySelectorAll('[data-aos]').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Observe stats section
-    const statsSection = document.querySelector('.hero-stats');
-    if (statsSection) {
-        observer.observe(statsSection);
+// Initialize 3D elements for hero section
+function initializeHero3D() {
+    // Initialize Three.js scene
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+    
+    const hero3DContainer = document.getElementById('hero-3d');
+    if (hero3DContainer) {
+        renderer.setSize(hero3DContainer.clientWidth, hero3DContainer.clientHeight);
+        renderer.setClearColor(0x000000, 0);
+        hero3DContainer.appendChild(renderer.domElement);
     }
+
+    // Create animated background geometry
+    const geometry = new THREE.BufferGeometry();
+    const vertices = [];
+    const colors = [];
+
+    for (let i = 0; i < 5000; i++) {
+        vertices.push(
+            (Math.random() - 0.5) * 2000,
+            (Math.random() - 0.5) * 2000,
+            (Math.random() - 0.5) * 2000
+        );
+        
+        colors.push(
+            Math.random() * 0.5 + 0.5,
+            Math.random() * 0.3 + 0.7,
+            1
+        );
+    }
+
+    geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+    const material = new THREE.PointsMaterial({
+        size: 3,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8
+    });
+
+    particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Create 3D logo
+    const logoGeometry = new THREE.BoxGeometry(2, 2, 2);
+    const logoMaterial = new THREE.MeshBasicMaterial({
+        color: 0x8b5cf6,
+        transparent: true,
+        opacity: 0.8
+    });
+    logo3D = new THREE.Mesh(logoGeometry, logoMaterial);
+    logo3D.position.set(0, 0, -5);
+    scene.add(logo3D);
+
+    camera.position.z = 5;
+
+    // Handle window resize
+    window.addEventListener('resize', onWindowResize);
 }
 
-// Chatbot functionality
-function initChatbot() {
+// Initialize chatbot functionality
+function initializeChatbot() {
     const chatbotFab = document.getElementById('chatbot-fab');
     const chatbotContainer = document.getElementById('chatbot');
     const chatbotToggle = document.getElementById('chatbot-toggle');
@@ -322,40 +171,30 @@ function initChatbot() {
     const chatbotSend = document.getElementById('chatbot-send');
     const chatbotMessages = document.getElementById('chatbot-messages');
 
-    // Predefined responses
+    // Chatbot responses
     const responses = {
         'hello': 'Hello! Welcome to Browque. How can I help you with your advertising needs today?',
-        'hi': 'Hi there! I\'m here to help you learn about our advertising services. What would you like to know?',
         'services': 'We offer comprehensive advertising solutions including newspaper advertising, digital marketing, social media campaigns, and cross-media analytics. Which service interests you most?',
         'newspaper': 'Our newspaper advertising service partners with top-tier publications like The Wall Street Journal and The New York Times. We help you reach affluent, engaged audiences with proven purchasing power.',
-        'digital': 'Our digital marketing services include Google Ads, social media campaigns, email marketing, and programmatic advertising. We\'ve generated over 2.5 billion digital impressions for our clients!',
-        'pricing': 'Our pricing varies based on your specific needs and campaign scope. I\'d recommend scheduling a consultation with our team to discuss your goals and get a customized quote.',
-        'contact': 'You can reach us at campaigns@browque.com or call us at +1 (555) 123-GROW. We\'re also located at 456 Media Plaza, Suite 200, New York, NY 10001.',
-        'portfolio': 'We\'ve helped clients achieve amazing results like +340% online sales growth, +500% brand awareness increases, and 3M+ app downloads. Check out our portfolio section for more success stories!',
-        'default': 'That\'s a great question! For detailed information about that topic, I\'d recommend speaking with one of our advertising specialists. You can contact us through the form on this page or call us directly.'
+        'digital': 'Our digital marketing services include Google Ads, social media campaigns, email marketing, and programmatic advertising. We use data-driven strategies to maximize your ROI.',
+        'pricing': 'Our pricing varies based on campaign scope and media mix. Would you like to schedule a consultation to discuss your specific needs and get a custom quote?',
+        'contact': 'You can reach us at campaigns@browque.com or call +1 (555) 123-GROW. We\'re also located at 456 Media Plaza, Suite 200, New York, NY 10001.',
+        'portfolio': 'We\'ve helped clients achieve amazing results: +340% online sales growth, +500% brand awareness increases, and +180% showroom traffic boosts. Would you like to see specific case studies?',
+        'default': 'That\'s a great question! Our advertising experts would love to discuss this with you in detail. Would you like to schedule a consultation or learn more about our services?'
     };
 
-    // Open/close chatbot
-    chatbotFab.addEventListener('click', () => {
-        toggleChatbot();
-    });
-
-    chatbotToggle.addEventListener('click', () => {
-        toggleChatbot();
-    });
-
+    // Toggle chatbot
     function toggleChatbot() {
-        chatbotOpen = !chatbotOpen;
-        if (chatbotOpen) {
-            chatbotContainer.classList.add('active');
-            chatbotFab.style.display = 'none';
-        } else {
-            chatbotContainer.classList.remove('active');
-            chatbotFab.style.display = 'flex';
+        chatbotContainer.classList.toggle('active');
+        if (chatbotContainer.classList.contains('active')) {
+            chatbotInput.focus();
         }
     }
 
-    // Send message
+    chatbotFab.addEventListener('click', toggleChatbot);
+    chatbotToggle.addEventListener('click', toggleChatbot);
+
+    // Send message function
     function sendMessage() {
         const message = chatbotInput.value.trim();
         if (!message) return;
@@ -371,6 +210,7 @@ function initChatbot() {
         }, 1000);
     }
 
+    // Add message to chat
     function addMessage(text, sender) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${sender}-message`;
@@ -390,6 +230,7 @@ function initChatbot() {
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
 
+    // Generate bot response
     function generateResponse(message) {
         const lowerMessage = message.toLowerCase();
         
@@ -404,136 +245,105 @@ function initChatbot() {
 
     // Event listeners
     chatbotSend.addEventListener('click', sendMessage);
-    chatbotInput.addEventListener('keypress', (e) => {
+    chatbotInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             sendMessage();
         }
     });
+
+    // Initialize 3D chatbot elements
+    initializeChatbot3D();
 }
 
-// Portfolio filter
-function initPortfolioFilter() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            filterBtns.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            btn.classList.add('active');
-
-            const filter = btn.getAttribute('data-filter');
-
-            portfolioItems.forEach(item => {
-                if (filter === 'all' || item.classList.contains(filter)) {
-                    item.style.display = 'block';
-                    item.classList.remove('hidden');
-                } else {
-                    item.style.display = 'none';
-                    item.classList.add('hidden');
-                }
-            });
-        });
-    });
-}
-
-// Digital showcase slider
-function initShowcase() {
-    const showcaseItems = document.querySelectorAll('.showcase-item');
-    const controlBtns = document.querySelectorAll('.control-btn');
-
-    function showSlide(index) {
-        showcaseItems.forEach((item, i) => {
-            item.classList.toggle('active', i === index);
-        });
+// Initialize 3D elements for chatbot
+function initializeChatbot3D() {
+    // Create 3D avatar for chatbot header
+    const avatarContainer = document.getElementById('chatbot-avatar');
+    if (avatarContainer) {
+        const avatarScene = new THREE.Scene();
+        const avatarCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const avatarRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         
-        controlBtns.forEach((btn, i) => {
-            btn.classList.toggle('active', i === index);
+        avatarRenderer.setSize(30, 30);
+        avatarRenderer.setClearColor(0x000000, 0);
+        avatarContainer.appendChild(avatarRenderer.domElement);
+
+        const avatarGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const avatarMaterial = new THREE.MeshBasicMaterial({
+            color: 0x8b5cf6,
+            transparent: true,
+            opacity: 0.8
         });
+        chatbot3D = new THREE.Mesh(avatarGeometry, avatarMaterial);
+        avatarScene.add(chatbot3D);
+
+        avatarCamera.position.z = 2;
+
+        function animateAvatar() {
+            requestAnimationFrame(animateAvatar);
+            chatbot3D.rotation.y += 0.02;
+            avatarRenderer.render(avatarScene, avatarCamera);
+        }
+        animateAvatar();
     }
 
-    controlBtns.forEach((btn, index) => {
-        btn.addEventListener('click', () => {
-            currentSlide = index;
-            showSlide(currentSlide);
+    // Create 3D FAB
+    const fabContainer = document.getElementById('fab-3d');
+    if (fabContainer) {
+        const fabScene = new THREE.Scene();
+        const fabCamera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        const fabRenderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        fabRenderer.setSize(30, 30);
+        fabRenderer.setClearColor(0x000000, 0);
+        fabContainer.appendChild(fabRenderer.domElement);
+
+        const fabGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+        const fabMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            transparent: true,
+            opacity: 0.9
         });
-    });
+        fab3D = new THREE.Mesh(fabGeometry, fabMaterial);
+        fabScene.add(fab3D);
 
-    // Auto-advance slides
-    setInterval(() => {
-        currentSlide = (currentSlide + 1) % totalSlides;
-        showSlide(currentSlide);
-    }, 5000);
-}
+        fabCamera.position.z = 2;
 
-// Contact form
-function initContactForm() {
-    const contactForm = document.getElementById('contact-form');
-    
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(contactForm);
-        const data = Object.fromEntries(formData);
-        
-        // Simulate form submission
-        const submitBtn = contactForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-            contactForm.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 2000);
-    });
-}
-
-// Newsletter form
-function initNewsletterForm() {
-    const newsletterForm = document.querySelector('.newsletter-form');
-    
-    newsletterForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        const email = newsletterForm.querySelector('input[type="email"]').value;
-        const submitBtn = newsletterForm.querySelector('button');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Subscribing...';
-        submitBtn.disabled = true;
-        
-        setTimeout(() => {
-            alert('Thank you for subscribing to our newsletter!');
-            newsletterForm.reset();
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        }, 1500);
-    });
-}
-
-// Scroll effects
-function initScrollEffects() {
-    // Parallax effect for hero section
-    window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        const hero = document.querySelector('.hero');
-        const heroContent = document.querySelector('.hero-content');
-        
-        if (hero && heroContent) {
-            heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+        function animateFab() {
+            requestAnimationFrame(animateFab);
+            fab3D.rotation.x += 0.01;
+            fab3D.rotation.y += 0.01;
+            fabRenderer.render(fabScene, fabCamera);
         }
+        animateFab();
+    }
+}
+
+// Initialize scroll-triggered animations
+function initializeAnimations() {
+    // Counter animation
+    const counters = document.querySelectorAll('.stat-number');
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
     });
 
-    // Smooth reveal animations
-    const revealElements = document.querySelectorAll('.service-card, .portfolio-item, .feature-item');
-    
-    const revealObserver = new IntersectionObserver((entries) => {
+    // General scroll animations
+    const animatedElements = document.querySelectorAll('[data-aos]');
+    const animationObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.style.opacity = '1';
@@ -542,12 +352,212 @@ function initScrollEffects() {
         });
     }, { threshold: 0.1 });
 
-    revealElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        revealObserver.observe(el);
+    animatedElements.forEach(element => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
+        element.style.transition = 'all 0.6s ease';
+        animationObserver.observe(element);
     });
+}
+
+// Animate counter numbers
+function animateCounter(element) {
+    const target = parseInt(element.getAttribute('data-target'));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+
+    const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+            current = target;
+            clearInterval(timer);
+        }
+        element.textContent = Math.floor(current);
+    }, 16);
+}
+
+// Initialize portfolio filter
+function initializePortfolioFilter() {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const filter = this.getAttribute('data-filter');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter portfolio items
+            portfolioItems.forEach(item => {
+                if (filter === 'all' || item.classList.contains(filter)) {
+                    item.classList.remove('hidden');
+                    item.style.opacity = '1';
+                    item.style.transform = 'scale(1)';
+                } else {
+                    item.classList.add('hidden');
+                    item.style.opacity = '0';
+                    item.style.transform = 'scale(0.8)';
+                }
+            });
+        });
+    });
+}
+
+// Initialize showcase slider
+function initializeShowcase() {
+    const showcaseItems = document.querySelectorAll('.showcase-item');
+    const controlButtons = document.querySelectorAll('.control-btn');
+
+    function showSlide(index) {
+        showcaseItems.forEach((item, i) => {
+            item.classList.toggle('active', i === index);
+        });
+        
+        controlButtons.forEach((btn, i) => {
+            btn.classList.toggle('active', i === index);
+        });
+    }
+
+    function nextSlide() {
+        showcaseIndex = (showcaseIndex + 1) % showcaseItems.length;
+        showSlide(showcaseIndex);
+    }
+
+    // Auto-advance slides
+    showcaseInterval = setInterval(nextSlide, 4000);
+
+    // Manual control
+    controlButtons.forEach((button, index) => {
+        button.addEventListener('click', function() {
+            clearInterval(showcaseInterval);
+            showcaseIndex = index;
+            showSlide(showcaseIndex);
+            showcaseInterval = setInterval(nextSlide, 4000);
+        });
+    });
+
+    // Pause on hover
+    const showcaseContainer = document.querySelector('.digital-showcase');
+    if (showcaseContainer) {
+        showcaseContainer.addEventListener('mouseenter', () => {
+            clearInterval(showcaseInterval);
+        });
+        
+        showcaseContainer.addEventListener('mouseleave', () => {
+            showcaseInterval = setInterval(nextSlide, 4000);
+        });
+    }
+}
+
+// Initialize form handling
+function initializeFormHandling() {
+    const contactForm = document.getElementById('contact-form');
+    const newsletterForm = document.querySelector('.newsletter-form');
+
+    // Contact form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+            
+            // Simulate form submission
+            setTimeout(() => {
+                alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+                this.reset();
+                submitButton.textContent = 'Launch My Campaign';
+                submitButton.disabled = false;
+            }, 2000);
+        });
+    }
+
+    // Newsletter form submission
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = this.querySelector('input[type="email"]').value;
+            const submitButton = this.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitButton.textContent = 'Subscribing...';
+            submitButton.disabled = true;
+            
+            // Simulate subscription
+            setTimeout(() => {
+                alert('Successfully subscribed to our newsletter!');
+                this.reset();
+                submitButton.textContent = 'Subscribe';
+                submitButton.disabled = false;
+            }, 1500);
+        });
+    }
+}
+
+// Initialize scroll effects
+function initializeScrollEffects() {
+    let ticking = false;
+
+    function updateScrollEffects() {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * -0.5;
+
+        // Parallax effect for hero section
+        const hero = document.querySelector('.hero');
+        if (hero) {
+            hero.style.transform = `translateY(${rate}px)`;
+        }
+
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateScrollEffects);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', requestTick);
+}
+
+// 3D Animation loop
+function animate() {
+    requestAnimationFrame(animate);
+
+    if (particles) {
+        particles.rotation.x += 0.0005;
+        particles.rotation.y += 0.001;
+    }
+
+    if (logo3D) {
+        logo3D.rotation.x += 0.01;
+        logo3D.rotation.y += 0.01;
+    }
+
+    if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+    }
+}
+
+// Handle window resize
+function onWindowResize() {
+    if (camera && renderer) {
+        const hero3DContainer = document.getElementById('hero-3d');
+        if (hero3DContainer) {
+            camera.aspect = hero3DContainer.clientWidth / hero3DContainer.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(hero3DContainer.clientWidth, hero3DContainer.clientHeight);
+        }
+    }
 }
 
 // Utility functions
@@ -563,16 +573,54 @@ function debounce(func, wait) {
     };
 }
 
-// Performance optimization
-const debouncedResize = debounce(() => {
-    if (renderer) {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
     }
-}, 250);
+}
 
+// Performance optimization
+const debouncedResize = debounce(onWindowResize, 250);
 window.addEventListener('resize', debouncedResize);
 
-// Console log for debugging
-console.log('[v0] Browque website initialized successfully');
+// Lazy loading for images
+function initializeLazyLoading() {
+    const images = document.querySelectorAll('img[data-src]');
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('lazy');
+                imageObserver.unobserve(img);
+            }
+        });
+    });
+
+    images.forEach(img => imageObserver.observe(img));
+}
+
+// Error handling
+window.addEventListener('error', function(e) {
+    console.error('JavaScript error:', e.error);
+});
+
+// Service Worker registration for PWA capabilities
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+                console.log('ServiceWorker registration successful');
+            })
+            .catch(function(err) {
+                console.log('ServiceWorker registration failed');
+            });
+    });
+}
